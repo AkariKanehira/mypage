@@ -1,0 +1,21 @@
+databases:
+  - name: mypage_DB
+    databaseName: mypage_db_r1ym
+    user: mypage
+    region: singapore
+
+services:
+  - type: web
+    name: mypage
+    env: ruby
+    region: singapore
+    plan: free
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec puma -C config/puma.rb"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mypage_DB
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
